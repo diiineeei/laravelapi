@@ -5,14 +5,14 @@ services:
       args:
         user: rodinei
         uid: 1000
-      context: ..
+      context: .
       dockerfile: Dockerfile
     image: laravelapi
     container_name: laravelapi-app
     restart: unless-stopped
-    working_dir: /var/www/
+    working_dir: /var/www/public
     volumes:
-      - ./:/var/www
+      - ./:/var/www/public
     networks:
       - laravelapi
 
@@ -39,7 +39,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./:/var/www/public
       - ./nginx:/etc/nginx/conf.d/
     networks:
       - laravelapi
