@@ -57,7 +57,7 @@ A resposta será uma lista de funcionários e matrículas
 ~~~json
 [
     {
-        "id": 1
+        "id": 1,
         "funcionario": "Fulano",
         "matricula": "KX1234",
         "tipo": "CLT",

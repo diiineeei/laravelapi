@@ -38,9 +38,9 @@ services:
       - app-network
 
   #MySQL Service
-  db:
+  dbmysql:
     image: mysql:8.0.22
-    container_name: db
+    container_name: dbmysql
     restart: unless-stopped
     tty: true
     ports:
