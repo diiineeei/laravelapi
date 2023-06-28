@@ -21,7 +21,7 @@ class APIController extends Controller
 
             DB::table('employees')->insert([
                 'id' => $item['id'],
-                'employees' => $item['employees'],
+                'employees' => $item['funcionario'],
                 'matricula' => $item['matricula'],
                 'tipo' => $item['tipo'],
                 'data_admissao' => $formattedDate
