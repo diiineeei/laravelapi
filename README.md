@@ -88,7 +88,7 @@ Na segunda-feira faremos uma rodada conjunta de avaliação do código.
 ## APIS
 ### Você pode baixar as requisições e executa-las com insominia ou postman clicando abaixo
 [![Iniciar no Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=API%20Laravel&uri=https%3A%2F%2Fgithub.com%2Fdiiineeei%2Flaravelapi%2Fblob%2Fmain%2FInsomnia.json)
-[![Baixar e Importar no Postman](https://img.shields.io/badge/Download%20e%20Importar-no%20Postman-orange?logo=postman)](https%3A%2F%2Fgithub.com%2Fdiiineeei%2Flaravelapi%2Fblob%2Fmain%2FPostman.json)
+[![Baixar e Importar no Postman](https://img.shields.io/badge/Download%20e%20Importar-no%20Postman-orange?logo=postman)](https://github.com/diiineeei/laravelapi/blob/main/Postman.json)
 
 
 ### para executar as requisições também é possivel utilizar os scripts abaixo
