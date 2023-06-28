@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('funcionarios', function (Blueprint $table) {
+        Schema::table('employees', function (Blueprint $table) {
             $table->decimal('hour_value', 8, 2)->after('data_admissao')->nullable();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('funcionarios', function (Blueprint $table) {
+        Schema::table('employees', function (Blueprint $table) {
             //
         });
     }

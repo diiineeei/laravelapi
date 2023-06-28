@@ -18,10 +18,13 @@ resposta:
     "current_page": 1,
     "data": [
         {
-        "name": "Fulano",
-        "registry": "KX1234"
+            "name": "Fulano",
+            "registry": "KX1234"
         },
-    …
+        {
+            "name": "Fulano2",
+            "registry": "KX1235"
+        }
     ]
 }
 ~~~

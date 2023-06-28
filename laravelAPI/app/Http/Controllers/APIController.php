@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Hour;
-use App\Models\Funcionario;
+use App\Models\employees;
 
 class APIController extends Controller
 {
-    public function consumeAPI()
+    public function dataImportAPI(): string
     {
         $client = new Client();
         $response = $client->get('https://63zs5guqxkzp3oxyxtzmdwrypa0bvonh.lambda-url.sa-east-1.on.aws/');
@@ -19,9 +19,9 @@ class APIController extends Controller
         foreach ($data as $item) {
             $formattedDate = date('Y-m-d', strtotime($item['data_admissao']));
 
-            DB::table('funcionarios')->insert([
+            DB::table('employees')->insert([
                 'id' => $item['id'],
-                'funcionario' => $item['funcionario'],
+                'employees' => $item['funcionario'],
                 'matricula' => $item['matricula'],
                 'tipo' => $item['tipo'],
                 'data_admissao' => $formattedDate
@@ -32,38 +32,38 @@ class APIController extends Controller
         return "Dados importados com sucesso!";
     }
 
-    public function getFuncionarios(Request $request, $page = 1)
+    public function getEmployees(Request $request, $page = 1): \Illuminate\Http\JsonResponse
     {
-        $funcionarios = DB::table('funcionarios')->paginate(10, ['*'], 'page', $page);
+        $employees = DB::table('employees')->paginate(10, ['*'], 'page', $page);
 
         $response = [
-            'total' => $funcionarios->total(),
-            'per_page' => $funcionarios->perPage(),
-            'current_page' => $funcionarios->currentPage(),
-            'data' => $funcionarios->items()
+            'total' => $employees->total(),
+            'per_page' => $employees->perPage(),
+            'current_page' => $employees->currentPage(),
+            'data' => $employees->items()
         ];
 
         return response()->json($response);
     }
 
-    public function updateHourValue(Request $request, $matricula)
+    public function updateHourValue(Request $request, $matricula): \Illuminate\Http\JsonResponse
     {
         $hourValue = $request->input('hour_value');
 
-        DB::table('funcionarios')->where('matricula', $matricula)->update(['hour_value' => $hourValue]);
+        DB::table('employees')->where('matricula', $matricula)->update(['hour_value' => $hourValue]);
 
         return response()->json(['message' => 'Valor da hora de trabalho atualizado com sucesso']);
     }
 
 
-    public function storeHours(Request $request, $matricula)
+    public function storeHours(Request $request, $matricula): \Illuminate\Http\JsonResponse
     {
         $requestData = $request->all();
 
         // Encontra o funcionário pelo número de matrícula
-        $funcionario = Funcionario::where('matricula', $matricula)->first();
+        $employees = Employees::where('matricula', $matricula)->first();
 
-        if (!$funcionario) {
+        if (!$employees) {
             return response()->json(['message' => 'Funcionário não encontrado'], 404);
         }
 
@@ -73,22 +73,22 @@ class APIController extends Controller
         $hours->total_hours = $requestData['total_hours'];
 
         // Relaciona o funcionário com as horas
-        $hours->funcionario()->associate($funcionario);
+        $hours->employees()->associate($employees);
         $hours->save();
 
         return response()->json(['message' => 'Horas cadastradas com sucesso']);
     }
-    public function getValueByMatriculaAndMonth($matricula, $mes)
+    public function getValueByMatriculaAndMonth($matricula, $mes): \Illuminate\Http\JsonResponse
     {
         // Buscar o funcionário pelo número de matrícula
-        $funcionario = Funcionario::where('matricula', $matricula)->first();
+        $employees = Employees::where('matricula', $matricula)->first();
 
-        if (!$funcionario) {
+        if (!$employees) {
             return response()->json(['message' => 'Funcionário não encontrado'], 404);
         }
 
         // Buscar as horas do funcionário no mês especificado
-        $horas = Hour::where('funcionario_id', $funcionario->id)
+        $horas = Hour::where('employees_id', $employees->id)
             ->where('month', $mes)
             ->get();
 
@@ -97,13 +97,13 @@ class APIController extends Controller
         $totalHours = 0;
 
         foreach ($horas as $hora) {
-            $totalValue += $hora->total_hours * $funcionario->hour_value;
+            $totalValue += $hora->total_hours * $employees->hour_value;
             $totalHours += $hora->total_hours;
         }
 
         return response()->json([
-            'name' => $funcionario->funcionario,
-            'registry' => $funcionario->matricula,
+            'name' => $employees->employees,
+            'registry' => $employees->matricula,
             'total_value' => $totalValue,
             'total_hours' => $totalHours
         ]);

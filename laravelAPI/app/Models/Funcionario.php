@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Funcionario extends Model
+class Employees extends Model
 {
     use HasFactory;
 
-    protected $table = 'funcionarios';
+    protected $table = 'employees';
 
     protected $fillable = [
-        'funcionario',
+        'employees',
         'matricula',
         'tipo',
         'data_admissao',
@@ -23,6 +23,6 @@ class Funcionario extends Model
     // Relacionamento com as horas
     public function hours(): HasMany
     {
-        return $this->hasMany(Hours::class);
+        return $this->hasMany(Hour::class);
     }
 }
