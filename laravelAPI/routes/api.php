@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/api-consumption', [APIController::class, 'consumeAPI']);
+Route::get('/data-import', [APIController::class, 'dataImportAPI']);
 Route::get('/employees/{page?}', [APIController::class, 'getEmployees']);
 Route::post('/value/{matricula}', [APIController::class, 'updateHourValue']);
 Route::post('/hours/{matricula}', [APIController::class, 'storeHours']);

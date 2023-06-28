@@ -10,7 +10,7 @@ use App\Models\employees;
 
 class APIController extends Controller
 {
-    public function consumeAPI()
+    public function dataImportAPI(): string
     {
         $client = new Client();
         $response = $client->get('https://63zs5guqxkzp3oxyxtzmdwrypa0bvonh.lambda-url.sa-east-1.on.aws/');
@@ -32,7 +32,7 @@ class APIController extends Controller
         return "Dados importados com sucesso!";
     }
 
-    public function getEmployees(Request $request, $page = 1)
+    public function getEmployees(Request $request, $page = 1): \Illuminate\Http\JsonResponse
     {
         $employees = DB::table('employees')->paginate(10, ['*'], 'page', $page);
 
@@ -46,7 +46,7 @@ class APIController extends Controller
         return response()->json($response);
     }
 
-    public function updateHourValue(Request $request, $matricula)
+    public function updateHourValue(Request $request, $matricula): \Illuminate\Http\JsonResponse
     {
         $hourValue = $request->input('hour_value');
 
@@ -56,7 +56,7 @@ class APIController extends Controller
     }
 
 
-    public function storeHours(Request $request, $matricula)
+    public function storeHours(Request $request, $matricula): \Illuminate\Http\JsonResponse
     {
         $requestData = $request->all();
 
@@ -78,7 +78,7 @@ class APIController extends Controller
 
         return response()->json(['message' => 'Horas cadastradas com sucesso']);
     }
-    public function getValueByMatriculaAndMonth($matricula, $mes)
+    public function getValueByMatriculaAndMonth($matricula, $mes): \Illuminate\Http\JsonResponse
     {
         // Buscar o funcionário pelo número de matrícula
         $employees = Employees::where('matricula', $matricula)->first();
