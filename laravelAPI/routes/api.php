@@ -19,13 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/greeting', function () {
-    return 'Hello World';
-});
-
-Route::get('/user/{id}', function (string $id) {
-    return 'User '.$id;
-});
-
 Route::get('/api-consumption', [APIController::class, 'consumeAPI']);
 Route::get('/employees/{page?}', [APIController::class, 'getFuncionarios']);
+Route::post('/value/{matricula}', [APIController::class, 'updateHourValue']);
+Route::post('/hours/{matricula}', [APIController::class, 'storeHours']);
+Route::get('/value/{matricula}/{mes}', [APIController::class, 'getValueByMatriculaAndMonth']);
+
