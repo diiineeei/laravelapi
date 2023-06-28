@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Hour;
-use App\Models\employees;
+use App\Models\Employees;
 
 class APIController extends Controller
 {
@@ -56,9 +56,13 @@ class APIController extends Controller
     }
 
 
-    public function storeHours(Request $request, $matricula): \Illuminate\Http\JsonResponse
+    public function storeHours(Request $request, $matricula)
     {
-        $requestData = $request->all();
+        $validatedData = $request->validate([
+            'year' => 'required|integer',
+            'month' => 'required|integer',
+            'total_hours' => 'required|numeric',
+        ]);
 
         // Encontra o funcionário pelo número de matrícula
         $employees = Employees::where('matricula', $matricula)->first();
@@ -68,9 +72,9 @@ class APIController extends Controller
         }
 
         $hours = new Hour;
-        $hours->year = $requestData['year'];
-        $hours->month = $requestData['month'];
-        $hours->total_hours = $requestData['total_hours'];
+        $hours->year = $validatedData['year'];
+        $hours->month = $validatedData['month'];
+        $hours->total_hours = $validatedData['total_hours'];
 
         // Relaciona o funcionário com as horas
         $hours->employees()->associate($employees);
