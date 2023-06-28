@@ -83,3 +83,48 @@ payload:
 
 Será avaliada a qualidade e legibilidade geral do código, a modelagem de dados utilizada para o armazenados, o uso de estruturas aderentes aos padrões de desenvolvimento do Laravel, a existência de testes de unidade e/ou de feature, adoção de boas práticas de desenvolvimento, e a resiliência geral do código.
 Na segunda-feira faremos uma rodada conjunta de avaliação do código.
+
+
+
+
+## APIS
+
+### Rota para importação de dados
+~~~shell
+curl --request GET --url http://localhost/api/data-import
+~~~
+
+### Rota para listagem e paginação de funcionarios
+~~~shell
+curl --request GET --url http://localhost/api/employees
+~~~
+
+~~~shell
+curl --request GET --url http://localhost/api/employees/{page}
+~~~
+
+### Rota para cadastrar o valor hora de um operário
+~~~shell
+curl --request POST \
+  --url http://localhost/api/value/{matricula} \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data hour_value=10
+~~~
+
+### Rota para cadastrar as horas de um operário no mês
+~~~shell
+curl --request POST \
+  --url http://localhost/api/hours/{matricula} \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "year": "2022",
+    "month": "10",
+    "total_hours": 12
+}'
+~~~
+
+### Rota traz o valor a ser pago para um determinado profissional, em determinado mês.
+~~~shell
+curl --request GET \
+  --url http://localhost/api/value/{matricula}/{mes}
+~~~
