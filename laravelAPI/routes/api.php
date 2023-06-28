@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/api-consumption', [APIController::class, 'consumeAPI']);
-Route::get('/employees/{page?}', [APIController::class, 'getFuncionarios']);
+Route::get('/employees/{page?}', [APIController::class, 'getEmployees']);
 Route::post('/value/{matricula}', [APIController::class, 'updateHourValue']);
 Route::post('/hours/{matricula}', [APIController::class, 'storeHours']);
 Route::get('/value/{matricula}/{mes}', [APIController::class, 'getValueByMatriculaAndMonth']);

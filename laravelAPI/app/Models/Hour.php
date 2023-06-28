@@ -16,12 +16,12 @@ class Hour extends Model
         'year',
         'month',
         'total_hours',
-        'funcionario_id'
+        'employees_id'
     ];
 
     // Relacionamento com o funcionário
-    public function funcionario(): BelongsTo
+    public function employees(): BelongsTo
     {
-        return $this->belongsTo(Funcionario::class, 'funcionario_id');
+        return $this->belongsTo(Employees::class, 'employees_id');
     }
 }
