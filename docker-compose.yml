@@ -55,6 +55,22 @@ services:
       - ./mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - app-network
+    # Swagger Service
+
+  # Swagger Service
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: swagger
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./swagger.yaml:/usr/share/nginx/html/swagger.yaml
+      - ./swagger.yaml:/var/www/swagger.yaml
+    environment:
+      API_URL: swagger.yaml
+    networks:
+      - app-network
 
 #Docker Networks
 networks:

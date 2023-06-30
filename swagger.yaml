@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Laravel API
+  description: API endpoints for Laravel application
+servers:
+  - url: http://localhost:80
+    description: Servidor de desenvolvimento
+
+paths:
+  /api/data-import:
+    post:
+      summary: Import data from API
+      operationId: importData
+      responses:
+        '200':
+          description: Data imported successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /api/employees:
+    get:
+      summary: Get paginated list of employees
+      operationId: getEmployees
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          description: Page number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  per_page:
+                    type: integer
+                  current_page:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Employee'
+  /api/value/{matricula}:
+    post:
+      summary: Update hour value for an employee
+      operationId: updateHourValue
+      parameters:
+        - name: matricula
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Employee matricula
+        - in: query
+          name: hour_value
+          schema:
+            type: number
+          description: Hour value
+      responses:
+        '200':
+          description: Hour value updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /api/hours/{matricula}:
+    post:
+      summary: Store hours worked for an employee
+      operationId: storeHours
+      parameters:
+        - name: matricula
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Employee matricula
+        - in: query
+          name: year
+          schema:
+            type: integer
+          description: Year
+        - in: query
+          name: month
+          schema:
+            type: integer
+          description: Month
+        - in: query
+          name: total_hours
+          schema:
+            type: number
+          description: Total hours
+      responses:
+        '200':
+          description: Hours stored successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /api/hour/{matricula}/{mes}:
+    get:
+      summary: Get total value and total hours for an employee by matricula and month
+      operationId: getValueByMatriculaAndMonth
+      parameters:
+        - name: matricula
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Employee matricula
+        - name: mes
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Month number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  registry:
+                    type: string
+                  total_value:
+                    type: number
+                  total_hours:
+                    type: number
+
+components:
+  schemas:
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        funcionario:
+          type: string
+        matricula:
+          type: string
+        tipo:
+          type: string
+        data_admissao:
+          type: string
