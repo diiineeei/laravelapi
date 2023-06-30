@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Hour;
 use App\Models\Employees;
+use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
 {
@@ -15,6 +16,21 @@ class APIController extends Controller
         $client = new Client();
         $response = $client->get('https://63zs5guqxkzp3oxyxtzmdwrypa0bvonh.lambda-url.sa-east-1.on.aws/');
         $data = json_decode($response->getBody(), true);
+
+        $rules = [
+            '*.id' => 'required|integer',
+            '*.funcionario' => 'required|string',
+            '*.matricula' => 'required|string',
+            '*.tipo' => 'required|in:CLT,PJ',
+            '*.data_admissao' => 'required|date_format:d/m/Y',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            // Se a validação falhar, você pode retornar uma resposta de erro ou realizar outras ações
+            return "Erro de validação: " . $validator->errors()->first();
+        }
 
         foreach ($data as $item) {
             $formattedDate = date('Y-m-d', strtotime($item['data_admissao']));
@@ -56,7 +72,7 @@ class APIController extends Controller
     }
 
 
-    public function storeHours(Request $request, $matricula)
+    public function storeHours(Request $request, $matricula): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validate([
             'year' => 'required|integer',
