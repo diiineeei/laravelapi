@@ -29,7 +29,7 @@ create-migration:
 create-unit-test:
 	# Utiliza o comando "php artisan make:test" para criar o teste unitário
 	# O nome do teste é passado como argumento "name" no formato "NomeDoTeste"
-	php artisan make:test $(name)Test --unit
+	docker exec -it $(CONTAINER_NAME) php artisan make:test $(name)Test --unit
 
 # Iniciar os contêineres Docker
 containers-up: stop-mysql-local
