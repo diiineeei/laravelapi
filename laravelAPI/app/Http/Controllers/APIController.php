@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Hour;
 use App\Models\Employees;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 class APIController extends Controller
 {
@@ -45,21 +46,31 @@ class APIController extends Controller
             return "Erro de validação: " . $validator->errors()->first();
         }
 
-        // Percorre os dados importados e insere no banco de dados
-        foreach ($data as $item) {
-            $formattedDate = date('Y-m-d', strtotime($item['data_admissao']));
+        try {
+            // Percorre os dados importados e insere no banco de dados
+            foreach ($data as $item) {
+                $formattedDate = date('Y-m-d', strtotime($item['data_admissao']));
 
-            DB::table('employees')->insert([
-                'id' => $item['id'],
-                'employees' => $item['funcionario'],
-                'matricula' => $item['matricula'],
-                'tipo' => $item['tipo'],
-                'data_admissao' => $formattedDate
-            ]);
+                DB::table('employees')->insert([
+                    'id' => $item['id'],
+                    'employees' => $item['funcionario'],
+                    'matricula' => $item['matricula'],
+                    'tipo' => $item['tipo'],
+                    'data_admissao' => $formattedDate
+                ]);
+            }
+
+            // Retorna uma mensagem de sucesso
+            return "Dados importados com sucesso!";
+        } catch (QueryException $exception) {
+            // Verifica se o erro é de chave duplicada
+            if ($exception->errorInfo[1] === 1062) {
+                return "Erro de importação: Chave duplicada encontrada.";
+            } else {
+                // Outro erro de banco de dados
+                return "Erro de importação: " . $exception->getMessage();
+            }
         }
-
-        // Retorna uma mensagem de sucesso
-        return "Dados importados com sucesso!";
     }
 
     /**
